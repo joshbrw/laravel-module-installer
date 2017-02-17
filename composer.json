@@ -1,6 +1,7 @@
 {
     "name": "joshbrw/laravel-module-installer",
     "type": "composer-plugin",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Joshbrw\\LaravelModuleInstaller\\": "src/"
