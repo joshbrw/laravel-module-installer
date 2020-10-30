@@ -2,17 +2,15 @@
 
 namespace Joshbrw\LaravelModuleInstaller;
 
-use Composer\Composer;
-use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
+use Exception;
 
 class LaravelModuleInstaller extends LibraryInstaller
 {
     const DEFAULT_ROOT = "Modules";
 
     /**
-     * Get the fully-qualified install path
      * {@inheritDoc}
      */
     public function getInstallPath(PackageInterface $package)
@@ -44,7 +42,7 @@ class LaravelModuleInstaller extends LibraryInstaller
      * Get the module name, i.e. "joshbrw/something-module" will be transformed into "Something"
      * @param PackageInterface $package
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getModuleName(PackageInterface $package)
     {
@@ -52,17 +50,17 @@ class LaravelModuleInstaller extends LibraryInstaller
         $split = explode("/", $name);
 
         if (count($split) !== 2) {
-            throw new \Exception($this->usage());
+            throw new Exception($this->usage());
         }
 
         $splitNameToUse = explode("-", $split[1]);
 
         if (count($splitNameToUse) < 2) {
-            throw new \Exception($this->usage());
+            throw new Exception($this->usage());
         }
 
         if (array_pop($splitNameToUse) !== 'module') {
-            throw new \Exception($this->usage());
+            throw new Exception($this->usage());
         }
 
         return implode('',array_map('ucfirst', $splitNameToUse));
