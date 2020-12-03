@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Composer\Package\PackageInterface;
+use Joshbrw\LaravelModuleInstaller\Exceptions\LaravelModuleInstallerException;
 use Joshbrw\LaravelModuleInstaller\LaravelModuleInstaller;
 
 class LaravelModuleInstallerTest extends TestCase
@@ -14,7 +15,10 @@ class LaravelModuleInstallerTest extends TestCase
     protected $config;
     protected $test;
 
-    public function setUp()
+    /**
+     * {@inheritDoc}
+     */
+    public function setUp(): void
     {
         $this->io = Mockery::mock(IOInterface::class);
         $this->composer = Mockery::mock(Composer::class);
@@ -37,7 +41,7 @@ class LaravelModuleInstallerTest extends TestCase
      *
      *    "type": "laravel-module",
      */
-    public function it_supports_laravel_module_type_only()
+    public function it_supports_laravel_module_type_only(): void
     {
         $this->assertFalse($this->test->supports('module'));
         $this->assertTrue($this->test->supports('laravel-module'));
@@ -47,20 +51,24 @@ class LaravelModuleInstallerTest extends TestCase
      * @test
      * @expectedException \Exception
      */
-    public function it_throws_exception_if_given_malformed_name()
+    public function it_throws_exception_if_given_malformed_name(): void
     {
         $mock = $this->getMockPackage('vendor');
 
-        $this->test->getInstallPath($mock);
+        $this->expectException(LaravelModuleInstallerException::class);
+
+        $this->test->getInstallPath($mock);        
     }
 
     /**
      * @test
      * @expectedException \Exception
      */
-    public function it_throws_exception_if_suffix_not_included()
+    public function it_throws_exception_if_suffix_not_included(): void
     {
         $mock = $this->getMockPackage('vendor/name');
+
+        $this->expectException(LaravelModuleInstallerException::class);
 
         $this->test->getInstallPath($mock);
     }
@@ -68,7 +76,7 @@ class LaravelModuleInstallerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_modules_folder_by_default()
+    public function it_returns_modules_folder_by_default(): void
     {
         $mock = $this->getMockPackage('vendor/name-module');
 
@@ -79,17 +87,19 @@ class LaravelModuleInstallerTest extends TestCase
      * @test
      * @expectedException \Exception
      */
-    public function it_throws_exception_if_given_malformed_compound_name()
+    public function it_throws_exception_if_given_malformed_compound_name(): void
     {
         $mock = $this->getMockPackage('vendor/some-compound-name');
 
-        $this->assertEquals('Modules/Name', $this->test->getInstallPath($mock));
+        $this->expectException(LaravelModuleInstallerException::class);
+
+        $this->test->getInstallPath($mock);
     }
 
     /**
      * @test
      */
-    public function it_can_use_compound_module_names()
+    public function it_can_use_compound_module_names(): void
     {
         $mock = $this->getMockPackage('vendor/compound-name-module');
 
@@ -106,7 +116,7 @@ class LaravelModuleInstallerTest extends TestCase
      *      "module-dir": "Custom"
      *    },
      */
-    public function it_can_use_custom_path()
+    public function it_can_use_custom_path(): void
     {
         $package = $this->getMockPackage('vendor/name-module');
 
@@ -116,7 +126,6 @@ class LaravelModuleInstallerTest extends TestCase
 
         $this->assertEquals('Custom/Name', $this->test->getInstallPath($package));
     }
-
 
     private function getMockPackage($return)
     {
