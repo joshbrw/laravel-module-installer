@@ -4,7 +4,6 @@ namespace Joshbrw\LaravelModuleInstaller;
 
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
-use Exception;
 use Joshbrw\LaravelModuleInstaller\Exceptions\LaravelModuleInstallerException;
 
 class LaravelModuleInstaller extends LibraryInstaller
@@ -47,7 +46,7 @@ class LaravelModuleInstaller extends LibraryInstaller
      * 
      * @return string Module Name
      * 
-     * @throws Exception
+     * @throws LaravelModuleInstallerException
      */
     protected function getModuleName(PackageInterface $package)
     {
