@@ -4,7 +4,7 @@ namespace Joshbrw\LaravelModuleInstaller;
 
 use Composer\Package\PackageInterface;
 use Composer\Installer\LibraryInstaller;
-use Exception;
+use Joshbrw\LaravelModuleInstaller\Exceptions\LaravelModuleInstallerException;
 
 class LaravelModuleInstaller extends LibraryInstaller
 {
@@ -21,6 +21,7 @@ class LaravelModuleInstaller extends LibraryInstaller
     /**
      * Get the base path that the module should be installed into.
      * Defaults to Modules/ and can be overridden in the module's composer.json.
+     * 
      * @return string
      */
     protected function getBaseInstallationPath()
@@ -40,9 +41,12 @@ class LaravelModuleInstaller extends LibraryInstaller
 
     /**
      * Get the module name, i.e. "joshbrw/something-module" will be transformed into "Something"
-     * @param PackageInterface $package
-     * @return string
-     * @throws Exception
+     * 
+     * @param PackageInterface $package Compose Package Interface
+     * 
+     * @return string Module Name
+     * 
+     * @throws LaravelModuleInstallerException
      */
     protected function getModuleName(PackageInterface $package)
     {
@@ -50,29 +54,20 @@ class LaravelModuleInstaller extends LibraryInstaller
         $split = explode("/", $name);
 
         if (count($split) !== 2) {
-            throw new Exception($this->usage());
+            throw new LaravelModuleInstallerException();
         }
 
         $splitNameToUse = explode("-", $split[1]);
 
         if (count($splitNameToUse) < 2) {
-            throw new Exception($this->usage());
+            throw new LaravelModuleInstallerException();
         }
 
         if (array_pop($splitNameToUse) !== 'module') {
-            throw new Exception($this->usage());
+            throw new LaravelModuleInstallerException();
         }
 
-        return implode('',array_map('ucfirst', $splitNameToUse));
-    }
-
-    /**
-     * Get the usage instructions
-     * @return string
-     */
-    protected function usage()
-    {
-        return "Ensure your package's name is in the format <vendor>/<name>-<module>";
+        return implode('', array_map('ucfirst', $splitNameToUse));
     }
 
     /**
