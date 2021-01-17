@@ -21,7 +21,7 @@ class LaravelModuleInstaller extends LibraryInstaller
     /**
      * Get the base path that the module should be installed into.
      * Defaults to Modules/ and can be overridden in the module's composer.json.
-     * 
+     *
      * @return string
      */
     protected function getBaseInstallationPath()
@@ -41,11 +41,11 @@ class LaravelModuleInstaller extends LibraryInstaller
 
     /**
      * Get the module name, i.e. "joshbrw/something-module" will be transformed into "Something"
-     * 
+     *
      * @param PackageInterface $package Compose Package Interface
-     * 
+     *
      * @return string Module Name
-     * 
+     *
      * @throws LaravelModuleInstallerException
      */
     protected function getModuleName(PackageInterface $package)
@@ -54,17 +54,17 @@ class LaravelModuleInstaller extends LibraryInstaller
         $split = explode("/", $name);
 
         if (count($split) !== 2) {
-            throw new LaravelModuleInstallerException();
+            throw LaravelModuleInstallerException::fromInvalidPackage($name);
         }
 
         $splitNameToUse = explode("-", $split[1]);
 
         if (count($splitNameToUse) < 2) {
-            throw new LaravelModuleInstallerException();
+            throw LaravelModuleInstallerException::fromInvalidPackage($name);
         }
 
         if (array_pop($splitNameToUse) !== 'module') {
-            throw new LaravelModuleInstallerException();
+            throw LaravelModuleInstallerException::fromInvalidPackage($name);
         }
 
         return implode('', array_map('ucfirst', $splitNameToUse));
