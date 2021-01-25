@@ -8,7 +8,7 @@ You can specify an alternate directory by including a `module-dir` in the extra 
         "module-dir": "Custom"
     }
 
-You can specify Namespace directory by including a `module-namespace-dir` equal true in the extra data in your composer.json file inside the module:
+You can specify vendor namespace directory by including a `module-namespace-dir` equal true in the extra data in your composer.json file inside the module:
 
      "extra": {
           "module-namespace-dir": true
@@ -17,7 +17,7 @@ The package is installed in the following structure:
 
 ```  
 -Modules
-    -Namespace
+    -VendorNamespace
         -Module
     -OtherModules
     ...
