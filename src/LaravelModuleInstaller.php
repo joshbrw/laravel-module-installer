@@ -41,6 +41,14 @@ class LaravelModuleInstaller extends LibraryInstaller
 
     /**
      * Get the module name, i.e. "joshbrw/something-module" will be transformed into "Something"
+     * If the module's composer.json has:
+     *      "extra": {
+     *          "module-namespace-dir": true
+     *      }
+     *  The package is installed in the following structure:
+     *  -Modules
+     *      - Namespace
+     *          -Module
      *
      * @param PackageInterface $package Compose Package Interface
      *
@@ -65,6 +73,13 @@ class LaravelModuleInstaller extends LibraryInstaller
 
         if (array_pop($splitNameToUse) !== 'module') {
             throw LaravelModuleInstallerException::fromInvalidPackage($name);
+        }
+
+        $extra = $package->getExtra();
+        if (!empty($extra['module-namespace-dir']) && $extra['module-namespace-dir']) {
+            $splitPackageNameToUse = explode("-", $split[0]);
+            return implode('', array_map('ucfirst', $splitPackageNameToUse)) . '/' .
+                implode('', array_map('ucfirst', $splitNameToUse));
         }
 
         return implode('', array_map('ucfirst', $splitNameToUse));

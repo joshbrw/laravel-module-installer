@@ -127,6 +127,28 @@ class LaravelModuleInstallerTest extends TestCase
         $this->assertEquals('Custom/Name', $this->test->getInstallPath($package));
     }
 
+    /**
+     * @test
+     *
+     * You can optionally include a vendor path name
+     * in the extra data in your composer.json file inside the module:
+     *  "extra": {
+     *      "module-namespace-dir": true
+     *  }
+     * If it is false or does not exist, the default mode will be used.
+     *
+     */
+    public function it_can_use_vendor_namespace_path(): void
+    {
+        $package = $this->getMockPackage('vendor/name-module');
+
+        $package->shouldReceive('getExtra')
+            ->andReturn(['module-namespace-dir' => true])
+            ->getMock();
+
+        $this->assertEquals('Modules/Vendor/Name', $this->test->getInstallPath($package));
+    }
+
     private function getMockPackage($return)
     {
         return Mockery::mock(PackageInterface::class)
