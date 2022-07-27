@@ -33,7 +33,7 @@ class LaravelModuleInstaller extends LibraryInstaller
         $extra = $this->composer->getPackage()->getExtra();
 
         if ($moduleDir = ($extra['module-dir'] ?? false)) {
-            return $dir;
+            return $moduleDir;
         }
         return self::DEFAULT_ROOT;
     }
@@ -49,7 +49,7 @@ class LaravelModuleInstaller extends LibraryInstaller
      */
     protected function getModuleName(PackageInterface $package)
     {
-        if ($moduleDirName = ($extra['module-dir-name'] ?? false)) {
+        if ($moduleDirName = ($package->getExtra()['module-dir-name'] ?? false)) {
             return $moduleDirName;
         }
         
