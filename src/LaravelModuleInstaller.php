@@ -50,6 +50,11 @@ class LaravelModuleInstaller extends LibraryInstaller
      */
     protected function getModuleName(PackageInterface $package)
     {
+        $extra = $package->getExtra();
+        if ($extra && isset($extra['module-name'])) {
+            return ucfirst($extra['module-name']);
+        }
+        
         $name = $package->getPrettyName();
         $split = explode("/", $name);
 
