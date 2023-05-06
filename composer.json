@@ -1,5 +1,5 @@
 {
-    "name": "joshbrw/laravel-module-installer",
+    "name": "vbulash/laravel-module-installer",
     "type": "composer-plugin",
     "license": "MIT",
     "autoload": {
