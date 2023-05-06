@@ -2,6 +2,7 @@
     "name": "vbulash/laravel-module-installer",
     "type": "composer-plugin",
     "license": "MIT",
+    "version": "1.0",
     "autoload": {
         "psr-4": {
             "Joshbrw\\LaravelModuleInstaller\\": "src/"
